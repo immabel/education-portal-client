@@ -2,7 +2,7 @@ import axios from "axios";
 import { ILoginViewModel, IRegistrationViewModel } from "../models/userInterfaces";
 
 const axiosInstance = axios.create({
-    baseURL: 'https://localhost:5001/api'
+    baseURL: 'https://localhost:44392/api'
 });
 
 const loginUrn = '/Auth/login';

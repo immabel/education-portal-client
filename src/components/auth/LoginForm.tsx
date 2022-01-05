@@ -1,77 +1,77 @@
 import { Button, Grid, Paper, TextField, Typography } from "@mui/material";
 import { useState } from "react";
-import { ILoginViewModel } from '../../models/userInterfaces';
-import { axiosAuth } from '../../api/services';
+import { ILoginViewModel } from "../../models/userInterfaces";
+import { axiosAuth } from "../../api/services";
 
-export function LoginForm () {
+export function LoginForm() {
+  const [login, setLogin] = useState<ILoginViewModel>({
+    email: "",
+    password: "",
+  });
 
-    const paperStyle = {
-        padding: 20,
-        height: '40vh',
-        width: 350,
-        margin: "20px auto"
-    }
+  const handleLogin = () => {
+    axiosAuth
+      .login(login)
+      .then((response) => {
+        if (response.status === 200) {
+          console.log("logged in");
+        } else {
+          console.log("user not found");
+        }
+      })
+      .catch((error) => console.log(error));
+  };
 
-    const [login, setLogin] = useState<ILoginViewModel>({
-        email: "",
-        password: ""
-    });
-
-    const handleLogin = () => {
-        axiosAuth.login(login)
-        .then(response => {
-            if (response.status === 200) {
-                console.log("logged in");
-            } else {
-                console.log("user not found");
-            }
-        })
-        .catch(error => console.log(error));
-    }
-
-    return (
-        <Paper style={paperStyle}>
-            <Typography variant="h3">
-                Log In Page
-            </Typography>
-            <Grid container direction="column" justifyContent="space-between">
-                {/* <Grid direction="column">
-
-                </Grid>
-                <Grid direction="column">
-                    
-                </Grid>
-                <Grid direction="column">
-                    
-                </Grid> */}
-                <TextField
+  return (
+    <Grid container direction="row" justifyContent="center" alignItems="center" height="100vh">
+      <Grid item>
+        <Paper style={{padding: "25px", marginBottom: "20px"}} elevation={6}>
+          <Grid container direction="column"spacing={3}>
+            <Grid item>
+              <Typography variant="h3">Log In Page</Typography>
+            </Grid>
+            <Grid item>
+              <TextField
                 required
-                id="email"
-                name="email"
                 label="Email"
                 variant="outlined"
+                fullWidth
                 onChange={(e) => {
-                    setLogin(currentLogin => ({
-                        ...currentLogin,
-                        email: e.target.value
-                    }))
-                  }}
-                />
-                <TextField
+                  setLogin((currentLogin) => ({
+                    ...currentLogin,
+                    email: e.target.value,
+                  }));
+                }}
+              />
+            </Grid>
+            <Grid item>
+              <TextField
                 required
-                id="password"
-                name="password"
+                type="password"
                 label="Password"
                 variant="outlined"
+                fullWidth
                 onChange={(e) => {
-                    setLogin(currentLogin => ({
-                        ...currentLogin,
-                        password: e.target.value
-                    }))
-                  }}
-                />
-                <Button variant="contained" color="secondary" onClick={handleLogin}>Log in</Button>
+                  setLogin((currentLogin) => ({
+                    ...currentLogin,
+                    password: e.target.value,
+                  }));
+                }}
+              />
             </Grid>
+            <Grid item>
+              <Button
+              style={{width: "100%"}}
+                variant="contained"
+                color="secondary"
+                onClick={handleLogin}
+              >
+                Log in
+              </Button>
+            </Grid>
+          </Grid>
         </Paper>
-    );
+      </Grid>
+    </Grid>
+  );
 }
